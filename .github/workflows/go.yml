@@ -50,7 +50,8 @@ jobs:
 
       # 7. Upload binary artifact
       - name: Upload Goignis binary
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: goignis-binary
           path: goignis/goignis
+
