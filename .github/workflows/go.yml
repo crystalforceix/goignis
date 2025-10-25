@@ -21,6 +21,7 @@ jobs:
         run: |
           git clone https://github.com/crystalforceix/goignis.git
           cd goignis
-          go build -o goignis
+          go build
           ls -lh
+
 
