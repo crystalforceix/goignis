@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
+  workflow_dispatch:  # cho phép chạy thủ công
 
 jobs:
   build:
@@ -12,16 +12,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Cài Go
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.24.4'
+          go-version: '1.24.4'  # version compiler bạn muốn
 
+      # 2. Checkout repo workflow (cần thiết để Actions chạy)
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      # 3. Clone goignis repo
       - name: Clone Goignis
+        run: git clone https://github.com/crystalforceix/goignis.git
+
+      # 4. Dọn dependencies và tạo go.sum
+      - name: Prepare Go modules
         run: |
-          git clone https://github.com/crystalforceix/goignis.git
           cd goignis
-          go build
+          go mod tidy
+
+      # 5. Cache Go modules để build nhanh
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('goignis/go.sum') }}
+
+      # 6. Build binary
+      - name: Build Goignis
+        run: |
+          cd goignis
+          go build -o goignis
           ls -lh
 
-
+      # 7. Upload binary artifact
+      - name: Upload Goignis binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: goignis-binary
+          path: goignis/goignis
