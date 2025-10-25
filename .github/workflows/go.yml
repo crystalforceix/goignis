@@ -3,7 +3,7 @@ name: go
 on:
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:  # cho phép chạy thủ công
 
 jobs:
@@ -54,4 +54,5 @@ jobs:
         with:
           name: goignis-binary
           path: goignis/goignis
+
 
