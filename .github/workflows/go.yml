@@ -12,17 +12,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Cài Go
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.24.4'
 
-      # 2. Clone goignis repo
       - name: Clone Goignis
         run: |
           git clone https://github.com/crystalforceix/goignis.git
           cd goignis
-          go mod tidy
           go build -o goignis
           ls -lh
+
